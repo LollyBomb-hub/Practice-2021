@@ -1,0 +1,3 @@
+EXPORTS
+    CreateCSVHandle @1
+    _Z16DestroyCSVHandleP3CSV @2
