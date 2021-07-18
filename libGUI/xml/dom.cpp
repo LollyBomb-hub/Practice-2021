@@ -6,16 +6,16 @@
 
 DOMTree::DOMTree()
 {
-	this->level = std::string("ROOT");
+	this->type = std::string("ROOT");
 	this->this_level_elements = std::vector<IXMLHandler*>(0);
 	this->setProperty("name", "ROOT");
 	return;
 }
 
 
-DOMTree::DOMTree(std::string level)
+DOMTree::DOMTree(std::string type)
 {
-	this->level = level;
+	this->type = type;
 	this->this_level_elements = std::vector<IXMLHandler*>(0);
 	return;
 }
@@ -28,9 +28,21 @@ bool DOMTree::addElement(IXMLHandler* element)
 }
 
 
+std::string DOMTree::getType()
+{
+	return this->type;
+}
+
+
 std::string DOMTree::getName()
 {
-	return this->level;
+	return this->getProperty("name");
+}
+
+
+std::string DOMTree::getText()
+{
+	return this->getProperty("text");
 }
 
 
@@ -42,8 +54,7 @@ std::vector<IXMLHandler*> DOMTree::getCurrentLevel()
 
 IXMLHandler* DOMTree::getLevelByPath(IXMLHandler* tree, std::vector<std::string> path)
 {
-	//std::cout << tree->getName() << ' ' << tree->getProperty("name") << '\n';
-	if(tree->getProperty("name") == path[0])
+	if(tree->getName() == path[0])
 	{
 		path.erase(path.begin());
 		if(path.size() == 0)
@@ -52,14 +63,14 @@ IXMLHandler* DOMTree::getLevelByPath(IXMLHandler* tree, std::vector<std::string>
 		}
 		else if(path.size() > 0)
 		{
-			return DOMTree::getLevelByPath(tree, path);
+			return tree->getLevelByPath(tree, path);
 		}
 	}
 	if(path.size() == 0)
 		return tree;
 	for(IXMLHandler* element: tree->getCurrentLevel())
 	{
-		if(element->getProperty("name") == path[0])
+		if(element->getName() == path[0])
 		{
 			path.erase(path.begin());
 			if(path.size() == 0)
@@ -89,20 +100,11 @@ std::string DOMTree::getProperty(std::string key)
 }
 
 
-void DOMTree::print()
-{
-	std::cout << "Deleting object " << this->getName() << '\n';
-	std::cout << "With properties:\n";
-	for(auto& element: this->properties)
-		std::cout << element.first << ' ' << element.second << '\n';
-}
-
-
 IXMLHandler* DOMTree::operator[](const char* level_name){
 	std::string check(level_name);
 	for(IXMLHandler* el: this->this_level_elements)
 	{
-		if(el->getProperty("name") == check)
+		if(el->getName() == check)
 			return el;
 	}
 	return new DOMTree("Error");

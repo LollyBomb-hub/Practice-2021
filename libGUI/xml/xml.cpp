@@ -39,7 +39,7 @@ TYPES parseLine(std::string line, DOMTree** dom)
 
 void printTree(IXMLHandler* tree, size_t count)
 {
-	std::cout << std::string(count, '\t') << tree->getProperty("name") << '\n';
+	std::cout << std::string(count, '\t') << tree->getName() << '\n';
 	for(IXMLHandler* element: tree->getCurrentLevel())
 		printTree(element, count + 1);
 	return;
@@ -51,7 +51,7 @@ DOMTree* parseXML(const char* filename)
 	std::stack<std::string> opened;
 	DOMTree* xml = new DOMTree();
 	std::vector<std::string> path;
-	path.push_back(xml->getProperty("name"));
+	path.push_back(xml->getName());
 	setlocale(LC_ALL, "rus");
 	std::ifstream in(filename);
 	size_t i = 1;
@@ -64,16 +64,16 @@ DOMTree* parseXML(const char* filename)
 		flag = parseLine(buffer, &dom);
 		if(flag == ELEMENT_DEFINITION)
 		{
-			DOMTree::getLevelByPath(xml, path)->addElement(dom);
-			path.push_back(dom->getProperty("name"));
-			opened.push(dom->getName());
+			xml->getLevelByPath(xml, path)->addElement(dom);
+			path.push_back(dom->getName());
+			opened.push(dom->getType());
 		}
 		else if(flag == CLOSING_ELEMENT)
 		{
-			if(opened.top() != dom->getName())
+			if(opened.top() != dom->getType())
 			{
 				std::ostringstream err_message;
-				err_message << opened.top() + "(Opened) != " + dom->getName() + "(Closing statement) at line: ";
+				err_message << opened.top() + "(Opened) != " + dom->getType() + "(Closing statement) at line: ";
 				err_message << i;
 				throw std::runtime_error(err_message.str());
 			}
@@ -84,6 +84,8 @@ DOMTree* parseXML(const char* filename)
 		}
 		i++;
 	}
+	if(path.size() != 1)
+		throw new std::logic_error("XML file corrupted!");
 	return xml;
 }
 

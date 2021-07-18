@@ -1,7 +1,7 @@
 [Project]
-FileName=CSV.dev
-Name=csv
-Type=3
+FileName=sv.dev
+Name=sv
+Type=2
 Ver=2
 ObjFiles=
 Includes=
@@ -11,7 +11,7 @@ ResourceIncludes=
 MakeIncludes=
 Compiler=-DBUILDING_DLL=1_@@_
 CppCompiler=-DBUILDING_DLL=1_@@_
-Linker=SV/sv.a_@@_
+Linker=
 IsCpp=1
 Icon=
 ExeOutput=
@@ -19,7 +19,7 @@ ObjectOutput=
 LogOutput=
 LogOutputEnabled=0
 OverrideOutput=0
-OverrideOutputName=CSV.dll
+OverrideOutputName=sv.a
 HostApplication=
 UseCustomMakefile=0
 CustomMakefile=
@@ -51,7 +51,7 @@ AutoIncBuildNr=0
 SyncProduct=1
 
 [Unit1]
-FileName=csv.h
+FileName=sv.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -61,7 +61,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit2]
-FileName=csv.cpp
+FileName=sv.h
 CompileCpp=1
 Folder=
 Compile=1

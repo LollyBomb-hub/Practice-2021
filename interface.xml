@@ -1,0 +1,44 @@
+<menu name="MainWindow">
+	<menu name="File" text="Файл">
+		<menuelement name="Open" action="OpenFile" text="Открыть">
+		</menuelement>
+		<menuelement name="Save" action="SaveFile" text="Сохранить">
+		</menuelement>
+		<menuelement name="Close" action="CloseFile" text="Закрыть">
+		</menuelement>
+		<menuelement name="Back" action="Back" isDefault="true" text="Назад">
+		</menuelement>
+	</menu>
+	<menu name="Edit" text="Редактировать документ">
+		<menuelement name="Add" action="AddRowToFile" text="Добавить запись">
+		</menuelement>
+		<menuelement name="Delete" action="DeleteRowFromFile" text="Удалить запись">
+		</menuelement>
+		<menuelement name="Edit" action="EditRowInFile" text="Редактировать существующую запись">
+		</menuelement>
+		<menuelement name="Back" action="Back" isDefault="true" text="Назад">
+		</menuelement>
+	</menu>
+	<menuelement name="Print" action="PrintFile" text="Вывести на экран документ">
+	</menuelement>
+	<menuelement name="Export" action="ExportFile" text="Экспорт документа в файл txt">
+	</menuelement>
+	<menu name="Manual" text="Справочник">
+		<menuelement name="Choose" action="ChooseManual" text="Выбрать справочник">
+		</menuelement>
+		<menuelement name="Print" action="PrintManual" text="Вывести на экран">
+		</menuelement>
+		<menuelement name="Edit" action="EditRowInManual" text="Редактировать запись в справочнике">
+		</menuelement>
+		<menuelement name="Add" action="AddRowToManual" text="Добавить запись в справочник">
+		</menuelement>
+		<menuelement name="Delete" action="DeleteRowFromManual" text="Удалить запись">
+		</menuelement>
+		<menuelement name="Back" action="Back" isDefault="true" text="Назад">
+		</menuelement>
+	</menu>
+	<menuelement name="About" action="About" text="О программе">
+	</menuelement>
+	<menuelement name="Exit" action="Exit" text="Выход">
+	</menuelement>
+</menu>

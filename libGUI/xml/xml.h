@@ -16,4 +16,7 @@
 typedef IXMLHandler* (__cdecl *FactoryFunctionXML)(const char*);
 
 
+DOMTree* parseXML(const char* filename);
+
+
 #endif

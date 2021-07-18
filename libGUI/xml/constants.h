@@ -12,6 +12,6 @@ typedef enum
 } TYPES;
 
 static const std::regex regexpr_type("<([/]?)([a-z]*)");
-static const std::regex regexpr_properties("([a-zA-Z]*)=[\"\']?([a-zA-Z]*)[\"\']?");
+static const std::regex regexpr_properties("([a-zA-Z]*)=[\"\']?([a-zA-Zà-ÿÀ-ß0-9\\s]*)[\"\']?");
 
 #endif
