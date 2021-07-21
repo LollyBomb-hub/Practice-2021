@@ -42,6 +42,43 @@ std::vector<std::string> SeparatedValues::GetValues(std::string value)
 }
 
 
+std::wstring SeparatedValues::JoinValues(std::vector<std::wstring> values)
+{
+	if(!values.size())
+		return std::wstring(L"");
+	std::wstring delim = std::wstring(this->delimeter.begin(), this->delimeter.end());
+	std::wstring result(L"");
+	for(size_t i = 0; i < values.size(); i++)
+		result += values[i] + delim;
+	return result;
+}
+
+
+std::vector<std::wstring> SeparatedValues::GetValues(std::wstring value)
+{
+	if(value.size() == 0 || value.size() < this->delimeter.size() || this->delimeter.size() == 0)
+		return std::vector<std::wstring>(0);
+	std::wstring delim = std::wstring(this->delimeter.begin(), this->delimeter.end());
+	const size_t length_of_delimeter = delim.size();
+	size_t position = value.find(delim);
+	while(position != std::wstring::npos)
+	{
+		value.replace(position, length_of_delimeter, L" ");
+		position = value.find(delim, position);
+	}
+	std::vector<std::wstring> result;
+	std::wistringstream from(value);
+	while(!from.eof())
+	{
+		std::wstring buffer;
+		from >> buffer;
+		if(buffer.size())
+			result.push_back(buffer);
+	}
+	return result;
+}
+
+
 extern "C" DLLIMPORT ISVHandler* __cdecl CreateSVHandle(const char* delimeter)
 {
 	return (ISVHandler*)(new SeparatedValues(delimeter));

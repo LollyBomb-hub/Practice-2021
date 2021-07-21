@@ -9,9 +9,9 @@
 
 
 
-CSV::CSV(const char* filename, const char* delimeter)
+CSV::CSV(const wchar_t* filename, const char* delimeter)
 {
-	this->filename = std::string(filename);
+	this->filename = std::wstring(filename);
 	this->separatedValueHelper = CreateSVHandle(delimeter);
 	this->readCSV();
 	return;
@@ -22,14 +22,14 @@ bool CSV::readCSV()
 {
 	this->last_id = 1;
 	size_t id;
-	std::string line;
-	std::ifstream in(this->filename.c_str());
+	std::wstring line;
+	std::wifstream in(this->filename.c_str());
 	if(!in)
 		throw new std::runtime_error("No such file!");
 	while(std::getline(in, line))
 	{
-		std::vector<std::string> values = this->separatedValueHelper->GetValues(line);
-		std::istringstream convert(values[0]);
+		std::vector<std::wstring> values = this->separatedValueHelper->GetValues(line);
+		std::wistringstream convert(values[0]);
 		convert >> id;
 		if(this->isPresent(id))
 			throw new std::logic_error("Id isn\'t unique!");
@@ -41,13 +41,13 @@ bool CSV::readCSV()
 }
 
 
-std::map<size_t, std::vector<std::string> > CSV::getData()
+std::map<size_t, std::vector<std::wstring> > CSV::getData()
 {
 	return this->contents;
 }
 
 
-std::vector<std::string> CSV::getById(size_t id)
+std::vector<std::wstring> CSV::getById(size_t id)
 {
 	return this->contents[id];
 }
@@ -65,12 +65,12 @@ bool CSV::isPresent(size_t id)
 }
 
 
-bool CSV::appendCSV(std::vector<std::string> append_data)
+bool CSV::appendCSV(std::vector<std::wstring> append_data)
 {
 	this->last_id++;
-	std::stringstream convert;
+	std::wstringstream convert;
 	convert << this->last_id;
-	std::string textId;
+	std::wstring textId;
 	convert >> textId;
 	append_data.insert(append_data.begin(), textId);
 	this->contents[this->last_id] = append_data;
@@ -78,7 +78,7 @@ bool CSV::appendCSV(std::vector<std::string> append_data)
 }
 
 
-bool CSV::updateRow(size_t id, std::vector<std::string> newData)
+bool CSV::updateRow(size_t id, std::vector<std::wstring> newData)
 {
 	if(!this->contents[id].size())
 		return false;
@@ -89,7 +89,7 @@ bool CSV::updateRow(size_t id, std::vector<std::string> newData)
 
 bool CSV::deleteRowById(size_t id)
 {
-	std::map<size_t, std::vector<std::string> >::iterator iterator;
+	std::map<size_t, std::vector<std::wstring> >::iterator iterator;
 	for(iterator = this->contents.begin(); iterator != this->contents.end(); iterator++)
 	{
 		if(iterator->first == id)
@@ -102,12 +102,12 @@ bool CSV::deleteRowById(size_t id)
 }
 
 
-bool CSV::exportToFile(std::string filename)
+bool CSV::exportToFile(std::wstring filename)
 {
-	std::ofstream in(filename.c_str());
+	std::wofstream in(filename.c_str());
 	if(!in)
 		throw new std::runtime_error("Error opening file!");
-	std::map<size_t, std::vector<std::string> >::iterator iterator;
+	std::map<size_t, std::vector<std::wstring> >::iterator iterator;
 	for(iterator = this->contents.begin(); iterator != this->contents.end(); iterator++)
 		in << this->separatedValueHelper->JoinValues(iterator->second) << '\n';
 	in.close();
@@ -122,7 +122,7 @@ void CSV::close()
 }
 
 
-extern "C" DLLIMPORT ICSVHandler* __cdecl CreateCSVHandle(const char* filename, const char* delimeter)
+extern "C" DLLIMPORT ICSVHandler* __cdecl CreateCSVHandle(const wchar_t* filename, const char* delimeter)
 {
 	return (ICSVHandler*)(new CSV(filename, delimeter));
 }

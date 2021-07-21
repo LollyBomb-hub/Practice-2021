@@ -19,6 +19,8 @@ class ISVHandler
 	public:
 		virtual std::string JoinValues(std::vector<std::string>) = 0;
 		virtual std::vector<std::string> GetValues(std::string) = 0;
+		virtual std::wstring JoinValues(std::vector<std::wstring>) = 0;
+		virtual std::vector<std::wstring> GetValues(std::wstring) = 0;
 };
 
 class SeparatedValues: public ISVHandler
@@ -27,6 +29,8 @@ class SeparatedValues: public ISVHandler
 		SeparatedValues(const char*);
 		std::string JoinValues(std::vector<std::string>);
 		std::vector<std::string> GetValues(std::string);
+		std::wstring JoinValues(std::vector<std::wstring>);
+		std::vector<std::wstring> GetValues(std::wstring);
 	private:
 		std::string delimeter;
 };

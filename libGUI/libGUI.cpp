@@ -144,6 +144,7 @@ Window::Window(std::string filename)
 	this->setCursorVisibility(false);
 	this->setCursorPosition();
 	this->squareOfConsole = this->console_info.dwSize.X * this->console_info.dwSize.Y;
+	this->utfIsSet(false);
 	return;
 }
 
