@@ -1,0 +1,3 @@
+EXPORTS
+    CreateWindowHandle @1
+    CreateXMLHandle @2
