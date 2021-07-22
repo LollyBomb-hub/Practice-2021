@@ -12,6 +12,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Running
-      run: echo Running
+    
+    - name: Installing MinGW
+      uses: egor-tensin/setup-mingw@v2
+      
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Compile Separated Values
+      run: dir
+      shell: cmd
