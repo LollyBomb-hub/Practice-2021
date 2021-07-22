@@ -1,15 +1,13 @@
 #include <conio.h>
-#include <codecvt>
+#include <cstdio>
 #include <fcntl.h>
 #include <fstream>
 #include <iostream>
 #include <io.h>
 #include <limits>
 #include <map>
-#include <stdio.h>
 #include <sstream>
 #include <vector>
-#include <Windows.h>
 #include <windows.h>
 
 
@@ -17,11 +15,17 @@
 
 
 bool utf16 = false;
-wchar_t buffer;
-std::wstring_convert<std::codecvt_utf8_utf16<wchar_t> > converter;
 Factory(Window) CreateGUI;
 Factory(CSV) CreateCSV;
 IWindowHandler* window;
+
+
+void clearWcinBuffer()
+{
+	while(std::wcin.peek() == L'\n')
+		std::wcin.get();
+	return;
+}
 
 
 size_t toInt(std::wstring str)
@@ -46,15 +50,6 @@ bool checkEnteredData(std::string type, std::wstring value, ICSVHandler* approri
 	return false;
 }
 
-std::wstring toString(size_t value)
-{
-	std::wstring result;
-	std::wstringstream converter;
-	converter << value;
-	converter >> result;
-	return result;
-}
-
 Request_t openFile(std::map<std::string, void*>* objects)
 {
 	Request_t result;
@@ -63,8 +58,9 @@ Request_t openFile(std::map<std::string, void*>* objects)
 	window->setCursorPosition(0, 0);
 	std::wstring filename;
 	std::wcout << L"Введите полный путь к файлу или имя файла, если он расположен рядом с программой. Файл при этом должен существовать!\n>>> ";
-	std::wcin >> filename;
-	ICSVHandler* csv = CreateCSV(filename.c_str(), ";");
+	clearWcinBuffer();
+	std::getline(std::wcin, filename);
+	ICSVHandler* csv = CreateCSV(filename.c_str(), ';');
 	std::pair<std::string, void*> toInsert("DataFile", (void*)csv);
 	objects->insert(toInsert);
 	return result;
@@ -141,7 +137,8 @@ Request_t exportFile(std::map<std::string, void*>* objects)
 	window->setCursorPosition(0, 0);
 	std::wstring filename;
 	std::wcout << L"Введите полный путь к файлу, в который надо экспортировать данные. Прав доступа должно хватать!\n>>> ";
-	std::wcin >> filename;
+	clearWcinBuffer();
+	std::getline(std::wcin, filename);
 	std::wofstream toFile(filename.c_str());
 	std::map<size_t, std::vector<std::wstring> > data = ((ICSVHandler*)objects[0]["DataFile"])->getData();
 	std::map<size_t, std::vector<std::wstring> > forms = ((ICSVHandler*)objects[0]["FormFile"])->getData();
@@ -261,9 +258,9 @@ Request_t chooseManual(std::map<std::string, void*>* objects)
 	std::wcout << L"Введите тип справочника(1 - вид, 2 - сорт): ";
 	std::wcin >> type;
 	std::wcout << L"Введите полный путь к файлу или имя файла, если он расположен рядом с программой. Файл при этом должен существовать!\n>>> ";
-	std::wcin >> filename;
-	window->setCursorVisibility(false);
-	ICSVHandler* csv = CreateCSV(filename.c_str(), ";");
+	clearWcinBuffer();
+	std::getline(std::wcin, filename);
+	ICSVHandler* csv = CreateCSV(filename.c_str(), ';');
 	switch(type)
 	{
 		case 1:
@@ -336,7 +333,8 @@ Request_t addRowToManual(std::map<std::string, void*>* objects)
 		default:
 			return result;
 	}
-	std::wcin >> values[0];
+	clearWcinBuffer();
+	std::getline(std::wcin, values[0]);
 	switch(type)
 	{
 		case 1:
@@ -366,6 +364,7 @@ Request_t editRowInManual(std::map<std::string, void*>* objects)
 	std::wcin >> type;
 	size_t id;
 	std::vector<std::wstring> values(1);
+	std::wcout << L"Введите id записи ";
 	std::wcin >> id;
 	std::wcout << L"Введите название ";
 	switch(type)
@@ -379,7 +378,8 @@ Request_t editRowInManual(std::map<std::string, void*>* objects)
 		default:
 			return result;
 	}
-	std::wcin >> values[0];
+	clearWcinBuffer();
+	std::getline(std::wcin, values[0]);
 	switch(type)
 	{
 		case 1:
@@ -460,8 +460,8 @@ int main(void)
 	
 	utf16 ^= true;
 	_setmode(_fileno(stdout), _O_U16TEXT);
-    _setmode(_fileno(stdin),  _O_U16TEXT);
-    _setmode(_fileno(stderr), _O_U16TEXT);
+	_setmode(_fileno(stdin),  _O_U16TEXT);
+	_setmode(_fileno(stderr), _O_U16TEXT);
 	// ***Loading all dlls***
 
 	// This peace of code loads Factory Functions for each dll

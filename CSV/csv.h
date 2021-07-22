@@ -35,7 +35,7 @@ class ICSVHandler
 class CSV: public ICSVHandler
 {
 	public:
-		CSV(const wchar_t*, const char*);
+		CSV(const wchar_t*, const char);
 		bool readCSV();
 		std::map<size_t, std::vector<std::wstring> > getData();
 		std::vector<std::wstring> getById(size_t);
@@ -54,11 +54,11 @@ class CSV: public ICSVHandler
 		ISVHandler* separatedValueHelper;
 };
 
-typedef ICSVHandler* (__cdecl *FactoryFunctionCSV)(const wchar_t*, const char*);
+typedef ICSVHandler* (__cdecl *FactoryFunctionCSV)(const wchar_t*, const char);
 
 #define IFactoryCSV "CreateCSVHandle"
 #define FactoryCSV FactoryFunctionCSV
 
-extern "C" DLLIMPORT ICSVHandler* __cdecl CreateCSVHandle(const wchar_t* filename, const char* delimeter);
+extern "C" DLLIMPORT ICSVHandler* __cdecl CreateCSVHandle(const wchar_t* filename, const char delimeter);
 
 #endif

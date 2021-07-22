@@ -10,6 +10,7 @@
 #endif
 
 #include <iostream>
+#include <regex>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -26,20 +27,23 @@ class ISVHandler
 class SeparatedValues: public ISVHandler
 {
 	public:
-		SeparatedValues(const char*);
+		SeparatedValues(const char);
 		std::string JoinValues(std::vector<std::string>);
 		std::vector<std::string> GetValues(std::string);
 		std::wstring JoinValues(std::vector<std::wstring>);
 		std::vector<std::wstring> GetValues(std::wstring);
 	private:
 		std::string delimeter;
+		std::wstring wdelimeter;
+		std::regex regexpr;
+		std::wregex wregexpr;
 };
 
 
 #define IFactorySV	"CreateSVHandle"
 #define FactorySV	FactoryFunctionSV
-typedef ISVHandler* (__cdecl *FactoryFunctionSV)(const char*);
+typedef ISVHandler* (__cdecl *FactoryFunctionSV)(const char);
 
-extern "C" DLLIMPORT ISVHandler* __cdecl CreateSVHandle(const char* delimeter);
+extern "C" DLLIMPORT ISVHandler* __cdecl CreateSVHandle(const char delimeter);
 
 #endif

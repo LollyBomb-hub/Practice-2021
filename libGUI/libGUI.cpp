@@ -12,7 +12,6 @@
 
 
 #include "libGUI.h"
-#include "common_object.h"
 
 
 #define ARROW_UP	0x48
@@ -166,6 +165,7 @@ void Window::run()
 	std::vector<IXMLHandler*> level = CurrentDom->getCurrentLevel();
 	while(true)
 	{
+		this->setCursorVisibility(false);
 		clear();
 		for(size_t i = 0; i < level.size(); i++)
 		{

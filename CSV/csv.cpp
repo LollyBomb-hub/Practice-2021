@@ -9,7 +9,7 @@
 
 
 
-CSV::CSV(const wchar_t* filename, const char* delimeter)
+CSV::CSV(const wchar_t* filename, const char delimeter)
 {
 	this->filename = std::wstring(filename);
 	this->separatedValueHelper = CreateSVHandle(delimeter);
@@ -28,14 +28,17 @@ bool CSV::readCSV()
 		throw new std::runtime_error("No such file!");
 	while(std::getline(in, line))
 	{
-		std::vector<std::wstring> values = this->separatedValueHelper->GetValues(line);
-		std::wistringstream convert(values[0]);
-		convert >> id;
-		if(this->isPresent(id))
-			throw new std::logic_error("Id isn\'t unique!");
-		if(id > this->last_id)
-			this->last_id = id;
-		this->contents[id] = values;
+		if(line.size())
+		{
+			std::vector<std::wstring> values = this->separatedValueHelper->GetValues(line);
+			std::wistringstream convert(values[0]);
+			convert >> id;
+			if(this->isPresent(id))
+				throw new std::logic_error("Id isn\'t unique!");
+			if(id > this->last_id)
+				this->last_id = id;
+			this->contents[id] = values;
+		}
 	}
 	return true;
 }
@@ -49,7 +52,9 @@ std::map<size_t, std::vector<std::wstring> > CSV::getData()
 
 std::vector<std::wstring> CSV::getById(size_t id)
 {
-	return this->contents[id];
+	if(this->isPresent(id))
+		return this->contents[id];
+	return std::vector<std::wstring>(0);
 }
 
 
@@ -61,7 +66,7 @@ bool CSV::saveCSV()
 
 bool CSV::isPresent(size_t id)
 {
-	return this->contents[id].size() > 0;
+	return this->contents.find(id) != this->contents.end();
 }
 
 
@@ -80,8 +85,13 @@ bool CSV::appendCSV(std::vector<std::wstring> append_data)
 
 bool CSV::updateRow(size_t id, std::vector<std::wstring> newData)
 {
-	if(!this->contents[id].size())
+	if(!this->isPresent(id))
 		return false;
+	std::wstringstream convert;
+	convert << id;
+	std::wstring textId;
+	convert >> textId;
+	newData.insert(newData.begin(), textId);
 	this->contents[id] = newData;
 	return true;
 }
@@ -122,7 +132,7 @@ void CSV::close()
 }
 
 
-extern "C" DLLIMPORT ICSVHandler* __cdecl CreateCSVHandle(const wchar_t* filename, const char* delimeter)
+extern "C" DLLIMPORT ICSVHandler* __cdecl CreateCSVHandle(const wchar_t* filename, const char delimeter)
 {
 	return (ICSVHandler*)(new CSV(filename, delimeter));
 }
