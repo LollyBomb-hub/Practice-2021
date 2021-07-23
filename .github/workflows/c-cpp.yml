@@ -20,5 +20,18 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Compile Separated Values
-      run: dir
+      working-directory: ./CSV/sv
+      run:
+        g++ -c *.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
+        ar r SeparatedValues.a SeparatedValues
+        ranlib SeparatedValues.a
+      shell: cmd
+    - name: Compile Comma-Separated Values
+      run: g++ -c *.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
+      shell: cmd
+    - name: Compile XML
+      run: g++ -c *.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
+      shell: cmd
+    - name: Compile libGUI
+      run: g++ -c *.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
       shell: cmd
