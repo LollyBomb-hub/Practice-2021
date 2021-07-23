@@ -29,8 +29,8 @@ jobs:
     - name: Compile Comma-Separated Values
       working-directory: ./CSV
       run: |
-        g++ -c *.cpp -o csv.o -Ofast -std=gnu++11 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
-        g++ -shared csv.o -o CSV.dll -static-libgcc ./SV/sv.a -s -Wl,--output-def,libCSV.def,--out-implib,libCSV.a,--add-stdcall-alias
+        g++ -c *.cpp -o csv.o -Ofast -std=gnu++11 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1 -xc++
+        g++ -shared csv.o -o CSV.dll -static-libgcc ./SV/SeparatedValues.a -s -Wl,--output-def,libCSV.def,--out-implib,libCSV.a,--add-stdcall-alias
       shell: cmd
     - name: Compile XML
       run: g++ -c *.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
