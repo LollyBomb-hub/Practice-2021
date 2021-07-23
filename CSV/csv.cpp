@@ -23,7 +23,7 @@ bool CSV::readCSV()
 	this->last_id = 1;
 	size_t id;
 	std::wstring line;
-	std::wifstream in(this->filename.c_str(), std::ios_base::in);
+	std::wifstream in(this->filename, std::ios_base::in);
 	if(!in)
 		throw new std::runtime_error("No such file!");
 	while(std::getline(in, line))
