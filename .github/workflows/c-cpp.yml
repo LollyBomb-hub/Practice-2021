@@ -32,5 +32,5 @@ jobs:
       working-directory: ./CSV
       shell: cmd
       run: |
-        g++ -c csv.cpp -o csv.o -Ofast -std=gnu++11 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1 -xc++
-        g++ -shared csv.o -o CSV.dll -static-libgcc ./SV/SeparatedValues.a -s -Wl,--output-def,libCSV.def,--out-implib,libCSV.a,--add-stdcall-alias
+        g++ -c csv.cpp -o csv.o -Ofast -std=gnu++17 -Wall -Wextra -Wpedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
+        g++ -shared csv.o -o CSV.dll -static-libgcc SV/SeparatedValues.a -s
