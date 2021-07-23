@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       
@@ -24,13 +24,11 @@ jobs:
     - name: Compile Separated Values
       working-directory: ./CSV/sv
       run: |
-        g++ -c *.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
+        g++ -c sv.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
         ar r SeparatedValues.a SeparatedValues
         ranlib SeparatedValues.a
-      shell: sh
     - name: Compile Comma-Separated Values
       working-directory: ./CSV
       run: |
-        g++ -c *.cpp -o csv.o -Ofast -std=gnu++11 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1 -xc++
+        g++ -c csv.cpp -o csv.o -Ofast -std=gnu++11 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1 -xc++
         g++ -shared csv.o -o CSV.dll -static-libgcc ./SV/SeparatedValues.a -s -Wl,--output-def,libCSV.def,--out-implib,libCSV.a,--add-stdcall-alias
-      shell: sh
