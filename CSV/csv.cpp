@@ -24,7 +24,7 @@ bool CSV::readCSV()
 	size_t id;
 	std::wstring line;
 	std::wifstream in;
-	in.open(this->filename);
+	in.open(this->filename.c_str());
 	if(!in)
 		throw new std::runtime_error("No such file!");
 	while(std::getline(in, line))
