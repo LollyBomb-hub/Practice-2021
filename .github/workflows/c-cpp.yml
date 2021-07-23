@@ -9,12 +9,9 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-    
-    - name: Installing Compiler
-      uses: JohelEGP/gcc-snapshot@v1.0.0
       
     - name: Checkout
       uses: actions/checkout@v2
@@ -25,16 +22,10 @@ jobs:
         g++ -c *.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
         ar r SeparatedValues.a SeparatedValues
         ranlib SeparatedValues.a
-      shell: cmd
+      shell: sh
     - name: Compile Comma-Separated Values
       working-directory: ./CSV
       run: |
         g++ -c *.cpp -o csv.o -Ofast -std=gnu++11 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1 -xc++
         g++ -shared csv.o -o CSV.dll -static-libgcc ./SV/SeparatedValues.a -s -Wl,--output-def,libCSV.def,--out-implib,libCSV.a,--add-stdcall-alias
-      shell: cmd
-    - name: Compile XML
-      run: g++ -c *.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
-      shell: cmd
-    - name: Compile libGUI
-      run: g++ -c *.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
-      shell: cmd
+      shell: sh
