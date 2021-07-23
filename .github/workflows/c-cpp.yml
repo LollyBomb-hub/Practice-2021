@@ -21,13 +21,16 @@ jobs:
       
     - name: Compile Separated Values
       working-directory: ./CSV/sv
-      run:
+      run: |
         g++ -c *.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
         ar r SeparatedValues.a SeparatedValues
         ranlib SeparatedValues.a
       shell: cmd
     - name: Compile Comma-Separated Values
-      run: g++ -c *.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
+      working-directory: ./CSV
+      run: |
+        g++ -c *.cpp -o csv.o -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
+        g++ -shared csv.o -o CSV.dll -static-libgcc ./SV/sv.a -s -Wl,--output-def,libCSV.def,--out-implib,libCSV.a,--add-stdcall-alias
       shell: cmd
     - name: Compile XML
       run: g++ -c *.cpp -o SeparatedValues -Ofast -std=gnu++17 -Wall -Wextra -pedantic -Werror -Wfatal-errors -DBUILDING_DLL=1
