@@ -15,6 +15,8 @@ jobs:
       
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Installation
+      uses: egor-tensin/setup-gcc@v1
       
     - name: Compile Separated Values
       working-directory: ./CSV/sv
